@@ -1,0 +1,135 @@
+/* =========================================================
+   DOBA DESIGN TOKENS
+   Registered with @property so theme changes ANIMATE smoothly
+   (no flash, text never becomes unreadable mid-transition).
+========================================================= */
+
+@property --page-bg      { syntax: '<color>'; inherits: true; initial-value: #050706; }
+@property --ink          { syntax: '<color>'; inherits: true; initial-value: #f3f6f4; }
+@property --ink-muted    { syntax: '<color>'; inherits: true; initial-value: #aab3ad; }
+@property --glass-surface        { syntax: '<color>'; inherits: true; initial-value: rgba(18, 21, 19, 0.48); }
+@property --glass-surface-strong { syntax: '<color>'; inherits: true; initial-value: rgba(12, 15, 13, 0.72); }
+@property --glass-border    { syntax: '<color>'; inherits: true; initial-value: rgba(255, 255, 255, 0.13); }
+@property --glass-highlight { syntax: '<color>'; inherits: true; initial-value: rgba(255, 255, 255, 0.19); }
+@property --glass-shadow    { syntax: '<color>'; inherits: true; initial-value: rgba(0, 0, 0, 0.24); }
+@property --glass-tint      { syntax: '<color>'; inherits: true; initial-value: rgba(181, 255, 97, 0.045); }
+
+:root {
+  --doba-green: #1ed760;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --font-display: 'Arial Black', 'Archivo Black', Impact, ui-sans-serif, system-ui, sans-serif;
+
+  transition:
+    --page-bg 0.45s ease,
+    --ink 0.45s ease,
+    --ink-muted 0.45s ease,
+    --glass-surface 0.45s ease,
+    --glass-surface-strong 0.45s ease,
+    --glass-border 0.45s ease,
+    --glass-highlight 0.45s ease,
+    --glass-shadow 0.45s ease,
+    --glass-tint 0.45s ease;
+}
+
+/* ---------- DARK: smoky glass ---------- */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --page-bg: #050706;
+  --ink: #f3f6f4;
+  --ink-muted: #aab3ad;
+  --ink-faint: rgba(243, 246, 244, 0.5);
+
+  --glass-surface: rgba(18, 21, 19, 0.48);
+  --glass-surface-strong: rgba(12, 15, 13, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.13);
+  --glass-highlight: rgba(255, 255, 255, 0.19);
+  --glass-shadow: rgba(0, 0, 0, 0.24);
+  --glass-tint: rgba(181, 255, 97, 0.045);
+
+  --glass-sheen: rgba(255, 255, 255, 0.07);
+  --glass-edge-low: rgba(181, 255, 97, 0.13);
+  --glass-glow: rgba(30, 215, 96, 0.08);
+  --glass-spec: rgba(255, 255, 255, 0.13);
+  --glass-fallback: rgba(16, 19, 17, 0.94);
+
+  --accent: #1ed760;
+  --accent-ink: #04130a;
+  --accent-text: #5cf08f; /* green text on dark: AA */
+  --chart-line: #1ed760;
+  --chart-grid: rgba(255, 255, 255, 0.09);
+  --veil: linear-gradient(180deg, rgba(5, 7, 6, 0.35), rgba(5, 7, 6, 0.9));
+
+  /* legacy names used by the original components */
+  --theme-bg: #050706;
+  --theme-surface: #0b0b0b;
+  --theme-surface-2: #111111;
+  --theme-text: #f3f6f4;
+  --theme-text-muted: #aab3ad;
+  --theme-border: rgba(255, 255, 255, 0.14);
+  --theme-card: #0c0c0c;
+  --theme-accent: #1ed760;
+  --theme-accent-text: #000000;
+  --theme-grid: rgba(255, 255, 255, 0.07);
+}
+
+/* ---------- LIGHT: misted water glass ---------- */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --page-bg: #e8eee9;
+  --ink: #0e1511;
+  --ink-muted: #46524b;
+  --ink-faint: rgba(14, 21, 17, 0.5);
+
+  --glass-surface: rgba(248, 250, 248, 0.55);
+  --glass-surface-strong: rgba(248, 250, 248, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.68);
+  --glass-highlight: rgba(255, 255, 255, 0.86);
+  --glass-shadow: rgba(30, 40, 32, 0.09);
+  --glass-tint: rgba(180, 210, 180, 0.07);
+
+  --glass-sheen: rgba(255, 255, 255, 0.5);
+  --glass-edge-low: rgba(120, 150, 125, 0.22);
+  --glass-glow: rgba(120, 190, 140, 0.1);
+  --glass-spec: rgba(255, 255, 255, 0.7);
+  --glass-fallback: rgba(246, 249, 246, 0.96);
+
+  --accent: #14b04d;
+  --accent-ink: #03150a;
+  --accent-text: #0b6b30; /* green text on light: AA */
+  --chart-line: #12a847;
+  --chart-grid: rgba(14, 21, 17, 0.1);
+  --veil: linear-gradient(180deg, rgba(232, 238, 233, 0.45), rgba(232, 238, 233, 0.92));
+
+  --theme-bg: #e8eee9;
+  --theme-surface: #f5f7f6;
+  --theme-surface-2: #eef2ef;
+  --theme-text: #0e1511;
+  --theme-text-muted: #46524b;
+  --theme-border: rgba(0, 0, 0, 0.12);
+  --theme-card: #ffffff;
+  --theme-accent: #16a34a;
+  --theme-accent-text: #ffffff;
+  --theme-grid: rgba(0, 0, 0, 0.06);
+}
+
+/* ---------- ambient backdrop colours (animated with the theme) ---------- */
+@property --bd-a { syntax: '<color>'; inherits: true; initial-value: rgba(30, 215, 96, 0.16); }
+@property --bd-b { syntax: '<color>'; inherits: true; initial-value: rgba(20, 140, 170, 0.13); }
+@property --bd-c { syntax: '<color>'; inherits: true; initial-value: rgba(255, 150, 90, 0.07); }
+:root { transition: --bd-a .45s, --bd-b .45s, --bd-c .45s, --page-bg .45s ease, --ink .45s ease, --ink-muted .45s ease,
+  --glass-surface .45s ease, --glass-surface-strong .45s ease, --glass-border .45s ease, --glass-highlight .45s ease,
+  --glass-shadow .45s ease, --glass-tint .45s ease; }
+:root[data-theme='dark']  { --bd-a: rgba(30, 215, 96, 0.16); --bd-b: rgba(20, 140, 170, 0.13); --bd-c: rgba(255, 150, 90, 0.07); }
+:root[data-theme='light'] { --bd-a: rgba(110, 200, 150, 0.5); --bd-b: rgba(150, 190, 235, 0.42); --bd-c: rgba(255, 200, 170, 0.38); }
+
+.backdrop {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60rem 42rem at 8% -6%, var(--bd-a), transparent 62%),
+    radial-gradient(52rem 40rem at 104% 38%, var(--bd-b), transparent 60%),
+    radial-gradient(46rem 36rem at 30% 108%, var(--bd-c), transparent 62%),
+    var(--page-bg);
+}
+
+:root[data-theme='dark']  { --hero-img-opacity: 0.85; }
+:root[data-theme='light'] { --hero-img-opacity: 0.5; }

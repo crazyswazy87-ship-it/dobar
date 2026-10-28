@@ -1,0 +1,39 @@
+
+/* Doba — How It Works scroll stack */
+
+.doba-how-stack {
+  width: 100%;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.doba-how-stack-item {
+  width: 100%;
+  min-width: 0;
+}
+
+.doba-how-glass {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  transform-origin: top center;
+}
+
+/* Keep card content readable on narrow screens. */
+@media (max-width: 640px) {
+  .doba-how-stack {
+    margin-inline: auto;
+  }
+
+  .doba-how-glass {
+    border-radius: 22px;
+  }
+}
+
+/* Respect reduced-motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  .doba-how-stack,
+  .doba-how-glass {
+    scroll-behavior: auto;
+  }
+}

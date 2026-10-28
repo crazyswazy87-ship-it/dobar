@@ -1,0 +1,386 @@
+@layer components {
+/* =========================================================
+   LIQUID GLASS MATERIAL
+
+   Layers (bottom → top):
+     1. backdrop blur + saturate         (what's behind, diffused)
+     2. fill: translucent surface + tint + sheen + bottom glow
+     3. ::after  specular spot that follows the pointer (desktop only)
+     4. content
+     5. ::before 1px edge reflection (gradient border)
+     6. inset highlights + stacked soft shadows (depth)
+
+   Variants are set with data-variant on <LiquidGlass>.
+========================================================= */
+
+.glass {
+  --blur: 18px;
+  --sat: 1.5;
+  --fill: var(--glass-surface);
+  --glass-r: var(--glass-radius, 24px);
+
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--glass-r);
+  color: var(--ink);
+  background:
+    linear-gradient(155deg, var(--glass-sheen), transparent 42%),
+    linear-gradient(180deg, transparent 58%, var(--glass-glow)),
+    linear-gradient(var(--glass-tint), var(--glass-tint)),
+    var(--fill);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+  backdrop-filter: blur(var(--blur)) saturate(var(--sat));
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-edge-low),
+    inset 0 0 0 1px var(--glass-border),
+    inset 0 22px 32px -26px var(--glass-highlight),
+    0 1px 2px var(--glass-shadow),
+    0 10px 26px -12px var(--glass-shadow),
+    0 26px 56px -30px var(--glass-shadow);
+  transition:
+    transform 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+
+/* 5 — fine edge reflection */
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    150deg,
+    var(--glass-highlight) 0%,
+    transparent 26%,
+    transparent 64%,
+    var(--glass-edge-low) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0.95;
+}
+
+/* 3 — pointer specular (below content, above fill) */
+.glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 0%), var(--glass-spec), transparent 62%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+/* ---------- variants ---------- */
+.glass[data-variant='subtle'] {
+  --blur: 10px;
+  --sat: 1.25;
+  --fill: color-mix(in srgb, var(--glass-surface) 62%, transparent);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 0 0 1px var(--glass-border),
+    0 8px 20px -14px var(--glass-shadow);
+}
+.glass[data-variant='standard'] {
+  --blur: 18px;
+  --sat: 1.5;
+}
+.glass[data-variant='strong'] {
+  --blur: 28px;
+  --sat: 1.4;
+  --fill: var(--glass-surface-strong);
+}
+.glass[data-variant='floating'] {
+  --blur: 24px;
+  --sat: 1.8;
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 0 var(--glass-edge-low),
+    inset 0 0 0 1px var(--glass-border),
+    inset 0 26px 36px -28px var(--glass-highlight),
+    0 2px 4px var(--glass-shadow),
+    0 18px 40px -14px var(--glass-shadow),
+    0 48px 90px -40px var(--glass-shadow);
+}
+.glass[data-variant='interactive'],
+.glass[data-interactive] {
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .glass[data-variant='interactive']:hover,
+  .glass[data-interactive]:hover {
+    transform: translateY(-3px);
+  }
+  .glass[data-variant='interactive']:hover::after,
+  .glass[data-interactive]:hover::after,
+  .glass[data-specular]:hover::after {
+    opacity: 1;
+  }
+}
+.glass[data-variant='interactive']:active,
+.glass[data-interactive]:active {
+  transform: translateY(0) scale(0.99);
+}
+.glass:focus-visible,
+.glass :focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 3px;
+}
+
+/* ---------- SVG refraction: Chromium desktop only, applied by JS flag ---------- */
+html[data-refract] .glass[data-refract] {
+  -webkit-backdrop-filter: url(#doba-refract) blur(calc(var(--blur) * 0.6)) saturate(var(--sat));
+  backdrop-filter: url(#doba-refract) blur(calc(var(--blur) * 0.6)) saturate(var(--sat));
+}
+
+/* ---------- fallbacks & accessibility ---------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass[data-variant] {
+    --fill: var(--glass-fallback);
+  }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .glass,
+  .glass[data-variant] {
+    --fill: var(--glass-surface-strong);
+  }
+}
+/* gentler blur on phones: cheaper to render */
+@media (max-width: 640px) {
+  .glass {
+    --blur: 12px;
+  }
+  .glass[data-variant='strong'] {
+    --blur: 18px;
+  }
+  .glass[data-variant='floating'] {
+    --blur: 16px;
+  }
+}
+
+/* ---------- Buttons ---------- */
+.gbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 2.75rem; /* 44px touch target */
+  padding: 0 1.4rem;
+  border: 0;
+  border-radius: 999px;
+  font: 700 0.8rem/1 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition:
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease),
+    opacity 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.gbtn[data-size='lg'] {
+  min-height: 3.25rem;
+  padding: 0 1.9rem;
+  font-size: 0.85rem;
+}
+.gbtn[data-size='sm'] {
+  min-height: 2.25rem;
+  padding: 0 1rem;
+  font-size: 0.7rem;
+}
+.gbtn:disabled,
+.gbtn[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.gbtn:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 3px;
+}
+.gbtn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+@media (hover: hover) and (pointer: fine) {
+  .gbtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+}
+
+.gbtn[data-kind='primary'] {
+  color: var(--accent-ink);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 55%),
+    var(--accent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+    0 10px 28px -8px color-mix(in srgb, var(--accent) 70%, transparent),
+    0 2px 4px rgba(0, 0, 0, 0.18);
+}
+.gbtn[data-kind='glass'] {
+  background:
+    linear-gradient(155deg, var(--glass-sheen), transparent 55%),
+    var(--glass-surface);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 0 0 1px var(--glass-border),
+    0 8px 22px -12px var(--glass-shadow);
+}
+.gbtn[data-kind='ghost'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--glass-border);
+}
+.gbtn[data-kind='ghost']:hover:not(:disabled) {
+  background: var(--glass-surface);
+}
+
+/* ---------- Form controls inside glass ---------- */
+.gfield {
+  display: grid;
+  gap: 0.4rem;
+}
+.gfield > label,
+.gfield > .glabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.gfield .ghint {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+.gfield .gerror {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--danger-text);
+}
+.ginput {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.7rem 0.95rem;
+  border: 0;
+  border-radius: 14px;
+  font: 500 1rem/1.4 var(--font-sans); /* 16px: no iOS zoom */
+  color: var(--ink);
+  /* inputs stay near-opaque so typing is always readable */
+  background: var(--input-bg);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.12),
+    inset 0 0 0 1px var(--glass-border);
+  transition: box-shadow 0.2s;
+}
+.ginput::placeholder {
+  color: var(--ink-faint);
+}
+.ginput:focus {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1.5px var(--accent-text),
+    0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.ginput[aria-invalid='true'] {
+  box-shadow: inset 0 0 0 1.5px var(--danger-text);
+}
+textarea.ginput {
+  min-height: 7rem;
+  resize: vertical;
+}
+select.ginput {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.6rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.95rem center;
+}
+:root[data-theme='dark'] {
+  --input-bg: rgba(8, 10, 9, 0.62);
+  --danger-text: #ff8a80;
+}
+:root[data-theme='light'] {
+  --input-bg: rgba(255, 255, 255, 0.82);
+  --danger-text: #b3261e;
+}
+
+/* ---------- Modal (native <dialog>) ---------- */
+dialog.gdialog {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+  height: 100%;
+  margin: 0;
+  padding: 1rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  overflow-y: auto;
+}
+dialog.gdialog[open] {
+  display: grid;
+  place-items: center;
+}
+dialog.gdialog::backdrop {
+  background: rgba(2, 4, 3, 0.45);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+dialog.gdialog[open] > .glass {
+  animation: gdialog-in 0.35s var(--ease);
+}
+@keyframes gdialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+}
+
+/* ---------- Small helpers ---------- */
+.g-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--glass-surface);
+  box-shadow: inset 0 0 0 1px var(--glass-border);
+}
+.g-chip[data-tone='accent'] {
+  color: var(--accent-text);
+}
+.g-chip[data-tone='warn'] {
+  color: var(--warn-text);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--warn-text) 45%, transparent);
+}
+:root[data-theme='dark'] {
+  --warn-text: #ffd479;
+}
+:root[data-theme='light'] {
+  --warn-text: #8a5a00;
+}
+
+/* denser fill for chrome that sits over photography (nav, players) */
+.glass[data-dense] {
+  --fill: color-mix(in srgb, var(--glass-surface-strong) 90%, transparent);
+}
+
+}

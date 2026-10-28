@@ -1,0 +1,290 @@
+
+.hero {
+  --ink: #131313;
+  --silver: #d5dde5;
+  --ember: #6dff1f;
+
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100svh;
+  min-height: 34rem;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--silver);
+  font-family: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Vertical swipes scroll the page; horizontal drags move the lens */
+  touch-action: pan-y;
+}
+
+/* ---- portrait stage: two stacked canvases ---- */
+.hero__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (pointer: fine) {
+  .hero__stage {
+    cursor: none;
+  }
+}
+
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---- hero copy ---- */
+.hero__copy {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 1.5rem;
+
+  width: 100%;
+  height: 100%;
+  max-width: min(44rem, 100%);
+  box-sizing: border-box;
+  padding: clamp(1.5rem, 5vw, 4.5rem);
+
+  /* Let pointer events pass through to the animated hero */
+  pointer-events: none;
+}
+
+/* ---- chrome headline ---- */
+.hero__title {
+  margin: 0;
+
+  font-family: "Big Shoulders Display", Impact, "Arial Narrow", sans-serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 12vw, 11rem);
+  line-height: 0.84;
+  letter-spacing: -0.01em;
+
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #b9c4cf 42%,
+    #4b5764 50%,
+    #aeb9c5 58%,
+    #f1f5f8 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ---- supporting copy ---- */
+.hero__blurb {
+  margin: 0;
+  max-width: 28ch;
+
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: rgba(213, 221, 229, 0.74);
+}
+
+/* ---- gradient CTA ---- */
+.btn-grad {
+  position: relative;
+  z-index: 10;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  margin: 10px 0;
+  padding: 15px 45px;
+
+  background-image: linear-gradient(
+    to right,
+    #34e89e 0%,
+    #0f3443 51%,
+    #34e89e 100%
+  );
+  background-size: 200% auto;
+  background-position: left center;
+
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+
+  border: 1px solid rgba(52, 232, 158, 0.45);
+  border-radius: 10px;
+
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    background-position 0.5s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+/* Gradient movement and subtle green glow */
+.btn-grad:hover {
+  background-position: right center;
+  color: #ffffff;
+
+  box-shadow:
+    0 0 12px rgba(52, 232, 158, 0.35),
+    0 0 24px rgba(52, 232, 158, 0.12);
+}
+
+/* Tactile feedback */
+.btn-grad:active {
+  transform: scale(0.97);
+}
+
+/* Keyboard focus */
+.btn-grad:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 4px;
+}
+
+/* ---- narrow screens: portrait on top, copy underneath ---- */
+@media (max-aspect-ratio: 19/20) {
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 1;
+    height: 55%;
+
+    background: linear-gradient(
+      to top,
+      var(--ink) 35%,
+      transparent
+    );
+
+    pointer-events: none;
+  }
+
+  .hero__title {
+    font-size: clamp(4rem, 21vw, 8rem);
+  }
+
+  .hero__copy {
+    padding: clamp(1.25rem, 5vw, 2rem);
+    gap: 1.25rem;
+  }
+
+  .btn-grad {
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 14px 32px;
+  }
+}
+
+/* ---- reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .btn-grad {
+    transition: none;
+  }
+}
+
+
+
+.doba-folder-section {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(80px, 10vw, 140px) 24px;
+  overflow: visible;
+}
+
+.doba-folder-container {
+  display: flex;
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.doba-folder-eyebrow {
+  margin: 0 0 12px;
+  color: var(--doba-green, #34e89e);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.doba-folder-heading {
+  margin: 0;
+  color: var(--silver, #d5dde5);
+  font-family: "Big Shoulders Display", Impact, sans-serif;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.doba-folder-description {
+  max-width: 540px;
+  margin: 16px 0 0;
+  color: var(--muted, #9ca3af);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.doba-folder-stage {
+  display: flex;
+  width: 100%;
+  min-height: 360px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
+  overflow: visible;
+}
+
+.doba-folder-hint {
+  margin: 8px 0 0;
+  color: var(--muted, #9ca3af);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .doba-folder-section {
+    padding: 64px 16px 80px;
+  }
+
+  .doba-folder-stage {
+    min-height: 300px;
+    margin-top: 20px;
+  }
+
+  .doba-folder-description {
+    font-size: 13px;
+  }
+}
