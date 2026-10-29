@@ -29,7 +29,7 @@ export default function TrendingThisMonth(): ReactElement {
         <h2 className="yrc-heading">Trending This Month</h2>
 
         <p className="yrc-trending-description">
-          Top 30 tracks across Kenya’s streaming scene.
+          Top 40 tracks across Kenya’s streaming scene.
         </p>
       </header>
 

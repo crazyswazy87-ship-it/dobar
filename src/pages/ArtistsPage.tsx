@@ -39,10 +39,12 @@ export default function ArtistsPage() {
                         {a.name}
                       </Link>
                     </h3>
+                    {/*}
                     <p className="muted mt-1 text-xs">
                       {a.tagline ? `${a.tagline} · ` : ''}
                       {d.tracks.filter((t) => t.artistId === a.id).length} songs
                     </p>
+                    */}
                     {a.spotifyUrl && (
                       <a href={a.spotifyUrl} target="_blank" rel="noopener noreferrer" className="relative z-10 mt-2 inline-flex min-h-10 items-center gap-1 text-xs font-bold" style={{ color: 'var(--accent-text)' }}>
                         Spotify <ExternalLink size={12} aria-hidden="true" />

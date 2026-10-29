@@ -41,4 +41,6 @@ export const ARTISTS: Artist[] = [
   a('zzero-sufuri', 'Zzero Sufuri', '/assets/images/zzero.jpg'),
   a('sofiya-nzau', 'Sofiya Nzau', '/assets/images/nzau.jpg'),
   a('maandy', 'Maandy', '/assets/images/maandy.jpg'),
+  a('mykey lb', 'Mykey Lb', '/assets/featured/mykeylb.png'),
+  a('tgl', 'Tgl', '/assets/featured/tgl.png'),
 ];

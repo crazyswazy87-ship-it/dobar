@@ -69,10 +69,33 @@ function useCountUp(
   return count;
 }
 
+const musicians: FolderItem[] = [
+  {
+    title: "Mykey Lb",
+    image: '/assets/featured/mykeylb.png',
+    alt: "Mykey Lb",
+    spotifyUrl: "https://open.spotify.com/artist/7f9Zy1eWs21mrCBCtwjRzN?si=MtB_9N_mQ3Wjak1kDT7P7A"
+  },
+  {
+    title: "get featured today",
+    image: '/assets/featured/liquidchrome.png',
+    alt: "Get featured",
+    spotifyUrl: "https://open.spotify.com/playlist/0EqOvlPjXnWCXULExlmp6x?si=NQquSa1HQaakQuXWoJqr5Q"
+  },
+  {
+    title: "tgl",
+     image: '/assets/featured/tgl.png',
+    alt: "Get featured",
+    spotifyUrl: "https://open.spotify.com/artist/4an9kHDmaS2lOMyoYMesbL?si=nncJWWM6R6GcCOOoeZphRw"
+  },
+];
+
 const formatNumber = (value: number) =>
   new Intl.NumberFormat('en-US').format(value);
 
 export default function DobaRecordsFolder() {
+
+  
   const { data } = useCatalog();
   const playlistCount = data?.playlists.length ?? 0;
 
@@ -114,33 +137,6 @@ export default function DobaRecordsFolder() {
     statsInView
   );
 
-  // Three photo cards displayed inside the folder.
-  const records = useMemo<RecordItem[]>(
-    () => [
-      {
-        id: 'doba-playlists',
-        title: 'TOXIC LYRIKALI',
-        description: `${formatNumber(playlistCount)} curated playlists in our catalogue.`,
-        image: '/assets/images/mboka.png',
-        alt: 'Doba music playlist catalogue',
-      },
-      {
-        id: 'verified-placements',
-        title: 'DYANA CODDS',
-        description: `${formatNumber(VERIFIED_PLACEMENTS_COUNT)} verified placements in our records.`,
-        image: '/assets/imagescodds.jpg',
-        alt: 'Music promotion and playlist placement',
-      },
-      {
-        id: 'monthly-listeners',
-        title: 'KAPITANI',
-        description: `${formatNumber(ESTIMATED_MONTHLY_LISTENERS)}+ estimated monthly listeners across our playlists.`,
-        image: '/assets/playlists/monthly-listeners.jpg',
-        alt: 'Music fans listening to their favourite songs',
-      },
-    ],
-    [playlistCount]
-  );
 
   return (
     <section
@@ -219,7 +215,7 @@ export default function DobaRecordsFolder() {
         <div className="doba-folder-stage">
           <Folder
             label="FEATURED NEW ARTISTS"
-            items={records}
+             items={musicians}
             mode="flap"
             variant="glass"
             layout="spread"
@@ -228,13 +224,11 @@ export default function DobaRecordsFolder() {
             height={210}
             tabHeight={42}
             draggable
-            onItemClick={(item) => {
-              console.log('Selected record:', item.title);
-            }}
-            onItemsChange={(updatedItems) => {
-              console.log('Updated folder order:', updatedItems);
-            }}
+            defaultOpen={false}
+            onItemClick={(item) => console.log("Selected:", item)}
           />
+
+      
         </div>
 
         <Reveal delay={0.14}>

@@ -21,6 +21,8 @@ export interface FolderItem {
   description?: string;
   image?: string;
   alt?: string;
+  /** Spotify artist/profile URL shown when this item is selected. */
+  spotifyUrl?: string;
   content?: ReactNode;
 }
 
@@ -1105,6 +1107,7 @@ const Folder = ({
   const [labelWidth, setLabelWidth] = useState(0);
   const [outside, setOutside] = useState<number[]>([]);
   const [gpu, setGpu] = useState(false);
+  const [selectedMusician, setSelectedMusician] = useState<FolderItem | null>(null);
   const isControlled = open !== undefined;
   const isOpen = isControlled ? Boolean(open) : internalOpen;
   const book = mode === 'book';
@@ -2029,8 +2032,14 @@ const Folder = ({
       interactive: index => settingsRef.current.open || state.items[index]?.place === 'out' || state.focus === index,
       select: index => {
         const s = settingsRef.current;
+        const selected = s.entries[index];
+        if (selected && typeof selected === 'object' && !isValidElement(selected) && 'spotifyUrl' in selected) {
+          setSelectedMusician(selected as FolderItem);
+        } else {
+          setSelectedMusician(null);
+        }
         if (s.zoomOnClick) state.focus = state.focus === index ? -1 : index;
-        s.onItemClick?.(s.entries[index], index);
+        s.onItemClick?.(selected, index);
         wake();
       },
       blur: () => {
@@ -2224,6 +2233,36 @@ const Folder = ({
         <span ref={measureRef} className="folder-tab-text folder-measure" aria-hidden="true">
           {label}
         </span>
+      )}
+
+      {selectedMusician && (
+        <div className="folder-musician-details" aria-live="polite">
+          <div className="folder-musician-copy">
+            <span className="folder-musician-eyebrow">ARTIST ON DOBA</span>
+            <strong className="folder-musician-name">{selectedMusician.title || 'Musician'}</strong>
+          </div>
+          {selectedMusician.spotifyUrl && (
+            <a
+              className="folder-spotify-button"
+              href={selectedMusician.spotifyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Listen to ${selectedMusician.title || 'this artist'} on Spotify`}
+              onClick={event => event.stopPropagation()}
+            >
+              View artist
+              <span aria-hidden="true">↗</span>
+            </a>
+          )}
+          <button
+            type="button"
+            className="folder-musician-close"
+            onClick={() => setSelectedMusician(null)}
+            aria-label="Close artist details"
+          >
+            ×
+          </button>
+        </div>
       )}
     </div>
   );
