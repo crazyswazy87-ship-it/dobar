@@ -648,23 +648,7 @@
 
 }
 
-.yrc-heading::after {
 
-  content: "";
-
-  display: block;
-
-  width: 52px;
-
-  height: 3px;
-
-  margin-top: 10px;
-
-  border-radius: 999px;
-
-  background: var(--doba-green, #34e89e);
-
-}
 
 :root[data-theme="light"] .yrc-heading {
 
@@ -1411,17 +1395,31 @@
 
 
 /* Music-style playback controls */
+
+/* Music-style playback controls */
 .yrc-music-controls {
   position: relative;
   z-index: 30;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: clamp(16px, 4vw, 44px);
   width: 100%;
   margin: 18px auto 8px;
   padding: 8px 12px;
 }
+
+.yrc-music-control-wrap {
+  position: relative;
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  min-width: 40px;
+}
+
 .yrc-music-control {
   position: relative;
   display: inline-flex;
@@ -1436,22 +1434,283 @@
   background: transparent;
   color: var(--yrc-arrow-text, currentColor);
   cursor: pointer;
-  transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
 }
-.yrc-music-control svg { width: 100%; height: 100%; }
-.yrc-music-control:hover { transform: scale(1.08); background: var(--yrc-arrow-bg, rgba(128,128,128,.14)); }
-.yrc-music-control[data-active="true"] { color: var(--yrc-focus, #20c997); }
+
+.yrc-music-control svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.yrc-music-control:hover {
+  transform: scale(1.08);
+  background: var(--yrc-arrow-bg, rgba(128, 128, 128, 0.14));
+}
+
+.yrc-music-control[data-active="true"] {
+  color: var(--yrc-focus, #20c997);
+}
+
+.yrc-music-control:focus-visible {
+  outline: 2px solid var(--yrc-focus, #20c997);
+  outline-offset: 4px;
+}
+
+/* Main play/pause button */
 .yrc-music-control.yrc-play-toggle {
   width: clamp(64px, 8vw, 88px);
   height: clamp(64px, 8vw, 88px);
   padding: 20px;
   background: #ffffff0f;
-  color: #111;
-  box-shadow: 0 4px 22px rgba(0,0,0,.18);
+  color: var(--yrc-arrow-text, currentColor);
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.18);
 }
-.yrc-repeat-one { position: absolute; right: 3px; bottom: 1px; font-size: 10px; font-weight: 800; }
-@media (max-width: 480px) {
-  .yrc-music-controls { gap: clamp(8px, 3vw, 18px); margin-top: 12px; }
-  .yrc-music-control { width: 34px; height: 34px; padding: 7px; }
-  .yrc-music-control.yrc-play-toggle { width: 58px; height: 58px; padding: 17px; }
+
+.yrc-music-control.yrc-play-toggle:hover {
+  background: var(--yrc-arrow-bg, rgba(128, 128, 128, 0.14));
+}
+
+/* Desktop tooltip: appears above the button */
+.yrc-music-tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  z-index: 50;
+  width: max-content;
+  max-width: 140px;
+  padding: 7px 10px;
+  border: 1px solid var(--yrc-border, rgba(255, 255, 255, 0.16));
+  border-radius: 8px;
+  background: var(--yrc-surface, #1b1e1d);
+  color: var(--yrc-text, #d5dde5);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  font-family: system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 5px);
+  transition:
+    opacity 160ms ease,
+    visibility 160ms ease,
+    transform 160ms ease;
+}
+
+/* Small tooltip arrow */
+.yrc-music-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid var(--yrc-border, rgba(255, 255, 255, 0.16));
+  border-bottom: 1px solid var(--yrc-border, rgba(255, 255, 255, 0.16));
+  background: var(--yrc-surface, #1b1e1d);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* Show tooltip on hover or keyboard focus */
+.yrc-music-control-wrap:hover .yrc-music-tooltip,
+.yrc-music-control-wrap:focus-within .yrc-music-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+/* Repeat-one indicator */
+.yrc-repeat-one {
+  position: absolute;
+  right: 3px;
+  bottom: 1px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* Mobile and device view: label below each button */
+@media (max-width: 759px) {
+  .yrc-music-controls {
+    align-items: flex-start;
+    gap: clamp(16px, 5vw, 30px);
+    margin-top: 12px;
+    padding: 8px 10px 4px;
+  }
+
+  .yrc-music-control-wrap {
+    gap: 7px;
+    min-width: 44px;
+  }
+
+  .yrc-music-control {
+    width: 38px;
+    height: 38px;
+    padding: 8px;
+  }
+
+  .yrc-music-control.yrc-play-toggle {
+    width: 58px;
+    height: 58px;
+    padding: 17px;
+  }
+
+  .yrc-music-tooltip {
+    position: static;
+    display: block;
+    width: max-content;
+    max-width: 100px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--yrc-muted, #929b9a);
+    box-shadow: none;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+
+  .yrc-music-tooltip::after {
+    display: none;
+  }
+
+  .yrc-music-control-wrap:hover .yrc-music-tooltip,
+  .yrc-music-control-wrap:focus-within .yrc-music-tooltip {
+    transform: none;
+  }
+}
+
+/* Compact phones */
+@media (max-width: 380px) {
+  .yrc-music-controls {
+    gap: 14px;
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .yrc-music-control-wrap {
+    min-width: 38px;
+    gap: 6px;
+  }
+
+  .yrc-music-control {
+    width: 34px;
+    height: 34px;
+    padding: 7px;
+  }
+
+  .yrc-music-control.yrc-play-toggle {
+    width: 52px;
+    height: 52px;
+    padding: 15px;
+  }
+
+  .yrc-music-tooltip {
+    max-width: 76px;
+    font-size: 9px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .yrc-music-control,
+  .yrc-music-tooltip {
+    transition: none;
+  }
+}
+
+/* =========================================
+   THEME-AWARE PLAYBACK BUTTONS
+   ========================================= */
+
+/* Light theme: subtle dark background for contrast */
+.yrc-root {
+  --yrc-music-button-bg: rgba(0, 0, 0, 0.07);
+  --yrc-music-button-hover: rgba(0, 0, 0, 0.14);
+  --yrc-music-button-color: #252525;
+  --yrc-music-button-border: rgba(0, 0, 0, 0.08);
+  --yrc-music-button-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark theme: translucent blurred glass */
+.yrc-root[data-theme="dark"],
+.yrc-root.yrc-dark,
+.yrc-root.dark,
+html.dark .yrc-root,
+body.dark .yrc-root,
+.dark .yrc-root,
+[data-theme="dark"] .yrc-root {
+  --yrc-music-button-bg: rgba(88, 86, 86, 0.2);
+  --yrc-music-button-hover: rgba(91, 86, 86, 0.3);
+  --yrc-music-button-color: #f5f5f5;
+  --yrc-music-button-border: rgba(87, 84, 84, 0.2);
+  --yrc-music-button-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+/* Apply theme colors to all three controls */
+.yrc-root .yrc-music-control {
+  color: var(--yrc-music-button-color);
+  background: var(--yrc-music-button-bg);
+  border: 1px solid var(--yrc-music-button-border);
+  box-shadow: var(--yrc-music-button-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+/* Hover and keyboard focus */
+.yrc-root .yrc-music-control:hover {
+  background: var(--yrc-music-button-hover);
+  transform: translateY(-1px);
+}
+
+.yrc-root .yrc-music-control:focus-visible {
+  outline: 2px solid var(--yrc-focus, #20c997);
+  outline-offset: 3px;
+}
+
+/* Main play button: stronger visibility */
+.yrc-root .yrc-music-control.yrc-play-toggle {
+  background: var(--yrc-music-button-bg);
+  border: 1px solid var(--yrc-music-button-border);
+  box-shadow: var(--yrc-music-button-shadow);
+}
+
+.yrc-root .yrc-music-control.yrc-play-toggle:hover {
+  background: var(--yrc-music-button-hover);
+}
+
+/* Keep active shuffle/repeat clearly identifiable */
+.yrc-root .yrc-music-control[data-active="true"] {
+  color: var(--yrc-focus, #20c997);
+  border-color: var(--yrc-focus, #20c997);
+}
+
+/* Preserve custom icon proportions */
+.yrc-root .yrc-music-control .yrc-custom-icon {
+  object-fit: contain;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .yrc-root .yrc-music-control {
+    transition: none;
+  }
 }

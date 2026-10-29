@@ -68,8 +68,8 @@ export default function TrendingThisMonth(): ReactElement {
               </span>
             </a>
 
-            <p className="yrc-spotify-caption">
-              Take the trending tracks with you.
+            <p className="yrc-navigation-count">
+              Take the trending tracks with you !
             </p>
           </div>
         </>

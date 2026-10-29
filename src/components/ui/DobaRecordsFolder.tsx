@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useCatalog } from '../../hooks/useCatalog';
 import Folder from '../layout/Folder';
@@ -11,8 +12,11 @@ const COUNT_DURATION = 6000;
 const VERIFIED_PLACEMENTS_COUNT = 33;
 
 type RecordItem = {
+  id: string;
   title: string;
   description: string;
+  image: string;
+  alt: string;
 };
 
 function useCountUp(
@@ -48,7 +52,6 @@ function useCountUp(
         1
       );
 
-      // Smooth ease-out animation.
       const easedProgress = 1 - Math.pow(1 - progress, 4);
 
       setCount(Math.round(easedProgress * endValue));
@@ -71,12 +74,8 @@ const formatNumber = (value: number) =>
 
 export default function DobaRecordsFolder() {
   const { data } = useCatalog();
-
   const playlistCount = data?.playlists.length ?? 0;
 
-
-
-  // Trigger the counters when the statistics enter the viewport.
   const statsRef = useRef<HTMLDivElement>(null);
   const [statsInView, setStatsInView] = useState(false);
 
@@ -85,7 +84,6 @@ export default function DobaRecordsFolder() {
 
     if (!element) return;
 
-    // Fallback for browsers without IntersectionObserver.
     if (typeof IntersectionObserver === 'undefined') {
       setStatsInView(true);
       return;
@@ -98,9 +96,7 @@ export default function DobaRecordsFolder() {
           observer.disconnect();
         }
       },
-      {
-        threshold: 0.25,
-      }
+      { threshold: 0.25 }
     );
 
     observer.observe(element);
@@ -118,29 +114,33 @@ export default function DobaRecordsFolder() {
     statsInView
   );
 
-  // Exactly three records inside the folder.
+  // Three photo cards displayed inside the folder.
   const records = useMemo<RecordItem[]>(
     () => [
       {
-        title: 'DOBA PLAYLISTS',
+        id: 'doba-playlists',
+        title: 'TOXIC LYRIKALI',
         description: `${formatNumber(playlistCount)} curated playlists in our catalogue.`,
+        image: '/assets/images/mboka.png',
+        alt: 'Doba music playlist catalogue',
       },
       {
-        title: 'MONTHLY LISTENERS',
-        description: `${formatNumber(ESTIMATED_MONTHLY_LISTENERS)}+ estimated monthly listeners across our playlists.`,
-      },
-      {
-        title: 'VERIFIED PLACEMENTS',
+        id: 'verified-placements',
+        title: 'DYANA CODDS',
         description: `${formatNumber(VERIFIED_PLACEMENTS_COUNT)} verified placements in our records.`,
+        image: '/assets/imagescodds.jpg',
+        alt: 'Music promotion and playlist placement',
+      },
+      {
+        id: 'monthly-listeners',
+        title: 'KAPITANI',
+        description: `${formatNumber(ESTIMATED_MONTHLY_LISTENERS)}+ estimated monthly listeners across our playlists.`,
+        image: '/assets/playlists/monthly-listeners.jpg',
+        alt: 'Music fans listening to their favourite songs',
       },
     ],
     [playlistCount]
   );
-
-  const items = records.map((record) => ({
-    title: record.title,
-    description: record.description,
-  }));
 
   return (
     <section
@@ -148,9 +148,14 @@ export default function DobaRecordsFolder() {
       aria-labelledby="doba-records-title"
     >
       <div className="doba-folder-container">
-        <p className="doba-folder-eyebrow">THE DOBA CATALOGUE</p>
+        <p className="doba-folder-eyebrow">
+          THE DOBA CATALOGUE
+        </p>
 
-        <h2 id="doba-records-title" className="doba-folder-heading">
+        <h2
+          id="doba-records-title"
+          className="yrc-heading"
+        >
           MADOBA
         </h2>
 
@@ -213,25 +218,22 @@ export default function DobaRecordsFolder() {
 
         <div className="doba-folder-stage">
           <Folder
-            label="TAP TO OPEN CATALOGUE"
-            items={items}
+            label="FEATURED NEW ARTISTS"
+            items={records}
             mode="flap"
-            variant="solid"
+            variant="glass"
             layout="spread"
             color="#3dff48"
-            paperColor="#fefffd"
-            tabPosition="center"
-            openOn="click"
-            size={1.3}
-            frost={0.25}
-            tilt={0.5}
-            speed={1}
-            bounce={0.4}
-            peek
-            intro
+            width={312}
+            height={210}
+            tabHeight={42}
             draggable
-            zoomOnClick
-            theme="dark"
+            onItemClick={(item) => {
+              console.log('Selected record:', item.title);
+            }}
+            onItemsChange={(updatedItems) => {
+              console.log('Updated folder order:', updatedItems);
+            }}
           />
         </div>
 
