@@ -27,14 +27,14 @@ export default function ArtistsPage() {
             {d.artists.map((a) => (
               <li key={a.id}>
                 <LiquidGlass as="article" variant="standard" radius={26} className="relative overflow-hidden p-2">
-                  <div className="aspect-[4/5] overflow-hidden rounded-[20px]">
+                  <div className="aspect-4/5 overflow-hidden rounded-[20px]">
                     <img src={a.imageSrc} alt={`${a.name}`} loading="lazy" decoding="async" className="h-full w-full object-cover object-top" />
                   </div>
                   <div className="px-2 pb-2 pt-3">
                     <h3 className="text-[0.95rem] font-bold leading-tight tracking-tight">
                       <Link
                         to={`/artists/${a.id}`}
-                        className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-[26px] focus-visible:after:ring-2 focus-visible:after:ring-[var(--accent-text)]"
+                        className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:rounded-[26px] focus-visible:after:ring-2 focus-visible:after:ring-var(--accent-text)"
                       >
                         {a.name}
                       </Link>

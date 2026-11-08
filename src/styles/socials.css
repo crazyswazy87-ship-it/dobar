@@ -1,0 +1,188 @@
+
+.card {
+  width: 100%;
+  height: 280px;
+  position: relative;
+  border-radius: 42px;
+  padding: 2px;
+  background: linear-gradient(145deg, #d1fae5, #ffffff 55%, #a7f3d0);
+  box-shadow:
+    0 18px 45px rgba(2, 44, 34, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.background {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 39px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(
+      ellipse at 90% 5%,
+      rgba(52, 211, 153, 0.2),
+      transparent 42%
+    ),
+    linear-gradient(
+      135deg,
+      #031f19 0%,
+      #064e3b 48%,
+      #08764e 100%
+    );
+}
+
+/* Heading */
+
+.logo {
+  position: absolute;
+  top: 26px;
+  right: 30px;
+  color: #ecfdf5;
+  font-size: clamp(18px, 4vw, 25px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  z-index: 7;
+}
+
+/* Shared panel styling */
+
+.box {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 14px;
+  color: white;
+  text-decoration: none;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-left: 0;
+  border-bottom: 0;
+  border-radius: 22px 22px 0 0;
+  overflow: hidden;
+  transition:
+    transform 0.4s ease,
+    filter 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.box:hover {
+  filter: brightness(1.13) saturate(1.1);
+  transform: translateY(-5px);
+}
+
+.box:focus-visible {
+  outline: 3px solid white;
+  outline-offset: -5px;
+}
+
+.icon {
+  width: 25px;
+  height: 25px;
+  color: #ffffff;
+  fill: currentColor;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
+}
+
+/* Spotify — Emerald / Green */
+
+.box1 {
+  width: 190px;
+  height: 190px;
+  bottom: -1px;
+  z-index: 3;
+  background: linear-gradient(
+    145deg,
+    #86efac 0%,
+    #22c55e 38%,
+    #15803d 72%,
+    #064e3b 100%
+  );
+  border-radius: 22px 22px 75px 0;
+}
+
+/* YouTube — Red */
+
+.box2 {
+  width: 136px;
+  height: 136px;
+  bottom: -1px;
+  z-index: 4;
+  background: linear-gradient(
+    145deg,
+    #ff7777 0%,
+    #ef3038 45%,
+    #b91c1c 100%
+  );
+  border-radius: 20px 20px 70px 0;
+}
+
+/* Apple Music — Pink / Violet */
+
+.box3 {
+  width: 82px;
+  height: 82px;
+  bottom: -1px;
+  z-index: 5;
+  background: linear-gradient(
+    145deg,
+    #f9a8d4 0%,
+    #ec4899 48%,
+    #9333ea 100%
+  );
+  border-radius: 16px 16px 55px 0;
+}
+
+/* Decorative final panel */
+
+.box4 {
+  width: 29px;
+  height: 29px;
+  bottom: -1px;
+  z-index: 6;
+  background: linear-gradient(
+    145deg,
+    #d1fae5,
+    #6ee7b7
+  );
+  border-radius: 10px 10px 0 0;
+  pointer-events: none;
+}
+
+/* Mobile adjustments */
+
+@media (max-width: 400px) {
+  .card {
+    height: 250px;
+    border-radius: 34px;
+  }
+
+  .background {
+    border-radius: 31px;
+  }
+
+  .box1 {
+    width: 170px;
+    height: 170px;
+  }
+
+  .box2 {
+    width: 122px;
+    height: 122px;
+  }
+
+  .box3 {
+    width: 76px;
+    height: 76px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box {
+    transition: none;
+  }
+}

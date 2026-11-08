@@ -101,13 +101,13 @@ export default function AudiencePage() {
               }))}
             />
             <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm font-semibold">
-              <input type="checkbox" role="switch" checked={sample} onChange={(e) => setSample(e.target.checked)} className="h-5 w-5 accent-[var(--accent)]" />
+              <input type="checkbox" role="switch" checked={sample} onChange={(e) => setSample(e.target.checked)} className="h-5 w-5 accent-var(--accent)" />
               Preview with sample data
             </label>
           </LiquidGlass>
 
           {sample && (
-            <p className="g-chip mt-4 !normal-case !tracking-normal" data-tone="warn" role="status">
+            <p className="g-chip mt-4 normal-case! tracking-normal!" data-tone="warn" role="status">
               <Info size={14} aria-hidden="true" /> Sample data: illustrative only, not real Doba numbers.
             </p>
           )}
@@ -120,7 +120,7 @@ export default function AudiencePage() {
               title={`${current.name} — follower history`}
               eyebrow={effective ? `Last ${effective} days` : 'History'}
             >
-              {snaps.status === 'loading' && <div className="h-[280px] animate-pulse rounded-2xl" style={{ background: 'var(--glass-surface)' }} aria-busy="true" />}
+              {snaps.status === 'loading' && <div className="h-280px animate-pulse rounded-2xl" style={{ background: 'var(--glass-surface)' }} aria-busy="true" />}
               {snaps.status === 'ready' && points.length > 1 && (
                 <AreaChart
                   key={`${current.id}-${effective}-${sample}`}
@@ -130,7 +130,7 @@ export default function AudiencePage() {
                 />
               )}
               {snaps.status === 'ready' && points.length <= 1 && (
-                <div className="grid min-h-[280px] place-content-center gap-3 rounded-2xl p-6 text-center" style={{ boxShadow: 'inset 0 0 0 1px var(--glass-border)' }}>
+                <div className="grid min-h-280px place-content-center gap-3 rounded-2xl p-6 text-center" style={{ boxShadow: 'inset 0 0 0 1px var(--glass-border)' }}>
                   <p className="text-lg font-bold">Growth history isn’t available for this playlist yet.</p>
                   <p className="muted mx-auto max-w-md text-sm leading-6">
                     We only chart real, dated follower readings, and we haven’t recorded enough for a trend. At least two
@@ -183,7 +183,7 @@ export default function AudiencePage() {
           {/* all playlists */}
           <GlassPanel as="section" aria-label="All playlists" title="All playlists" className="mt-5">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[30rem] text-left text-sm">
+              <table className="w-full min-w-30rem text-left text-sm">
                 <thead className="muted text-xs uppercase tracking-[0.12em]">
                   <tr>
                     <th scope="col" className="pb-3 font-bold">Playlist</th>

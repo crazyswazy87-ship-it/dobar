@@ -33,7 +33,7 @@ export function ArtistHeader({ artist, stats }: { artist: Artist; stats: ArtistL
           )}
           <h1
             id="artist-name"
-            className="line-clamp-3 break-words font-[family-name:var(--font-display)] text-[clamp(2.25rem,8vw,5.5rem)] leading-[1.02] tracking-tight"
+            className="line-clamp-3 wrap-break-words font-[family-name:var(--font-display)] text-[clamp(2.25rem,8vw,5.5rem)] leading-[1.02] tracking-tight"
           >
             {artist.name}
           </h1>

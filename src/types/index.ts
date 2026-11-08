@@ -49,6 +49,7 @@ export interface Playlist {
   featured: boolean;
 }
 
+
 export interface ArtistSocials {
   instagram?: string;
   tiktok?: string;
@@ -62,14 +63,24 @@ export interface Artist {
   imageSrc: string;
   bio: string | null;
   tagline: string | null;
+
+  /** Full Spotify artist URL. */
   spotifyUrl: string | null;
+
+  /** Full Apple Music artist URL. */
+  appleMusicUrl?: string | null;
+
   socials: ArtistSocials;
+
   featured: boolean;
+
   /** Hex colour for the profile header gradient. Optional. */
   accent?: string;
+
   /** Shows the verified badge on the artist profile. Optional. */
   verified?: boolean;
 }
+
 
 export interface Track {
   id: string;
